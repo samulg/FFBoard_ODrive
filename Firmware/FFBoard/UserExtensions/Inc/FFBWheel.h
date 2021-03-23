@@ -10,6 +10,7 @@
 #include <CmdParser.h>
 #include <FFBoardMain.h>
 #include <MotorPWM.h>
+#include <Odrive.h>
 #include <ShifterAnalog.h>
 #include "usbd_customhid.h"
 #include "TMC4671.h"

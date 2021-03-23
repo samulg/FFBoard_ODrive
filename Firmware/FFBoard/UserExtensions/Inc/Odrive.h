@@ -15,10 +15,12 @@
 #include "uarthandler.h"
 #include "target_constants.h"
 #include <string>
+#include <iostream>
+#include <sstream>
 
 using namespace std;
 
-enum AxisState  { AXIS_STATE_UNDEFINED = 0,
+enum OdrvAxisState  { AXIS_STATE_UNDEFINED = 0,
 		AXIS_STATE_IDLE  =1,
 		AXIS_STATE_STARTUP_SEQUENCE = 2,
 		AXIS_STATE_FULL_CALIBRATION_SEQUENCE = 3,
@@ -32,18 +34,18 @@ enum AxisState  { AXIS_STATE_UNDEFINED = 0,
 		AXIS_STATE_HOMING = 11
 };
 
-enum MotorType  {MOTOR_TYPE_HIGH_CURRENT =0,
+enum OdrvMotorType  {MOTOR_TYPE_HIGH_CURRENT =0,
 		MOTOR_TYPE_GYMBAL =2,
 		MOTOR_TYPE_ACIM=3
 };
 
-enum ControlMode  {CONTROL_MODE_VOLTAGE_CONTROL=0,
++enum OdrvControlMode  {CONTROL_MODE_VOLTAGE_CONTROL=0
 		CONTROL_MODE_TORQUE_CONTROL=1,
 		CONTROL_MODE_VELOCITY_CONTROL=2,
 		CONTROL_MODE_POSITION_CONTROL=3
 };
 
-enum InputMode  {INPUT_MODE_INACTIVE =0,
+enum OdrvInputMode  {INPUT_MODE_INACTIVE =0,
 		INPUT_MODE_PASSTHROUGH=1,
 		INPUT_MODE_VEL_RAMP=2,
 		INPUT_MODE_POS_FILTER=3,
@@ -67,15 +69,13 @@ public:
 	void stop();
 	void start();
 
-/*
-	void setMode(ModePWM_DRV mode);
-	ModePWM_DRV getMode();
+	/*
+	int32_t getPos();
+	void setPos(int32_t pos);
 
-	void saveFlash(); 		// Write to flash here
-	void restoreFlash();	// Load from flash
-
-	ParseStatus command(ParsedCommand* cmd,std::string* reply);
-	virtual std::string getHelpstring(){return "PWM: pwm_mode,pwm_speed\n";}*/
+	uint32_t getCpr(); // Encoder counts per rotation
+	void setCpr(uint32_t cpr);	// Encoder counts per rotation
+	*/
 
 
 
@@ -83,22 +83,22 @@ private:
 
 
 	float current_lim= 20; //[V] Volts because of motor_type
-	float vel_lim= 3; //[turns/s]
+	float vel_limit= 3; //[turns/s]
 	float calibration_current = 10; //[V] Volts because of motor_type
 	float brake_resistance =2;// [Ohm]
 	float pole_pairs = 4;
 	float torque_constant = 1.58; // [A/Nm]
-	MotorType motor_type = MOTOR_TYPE_GYMBAL;
+	OdrvMotorType motor_type = MOTOR_TYPE_GYMBAL;
 	int cpr = 40000;// [CPR]
 
-	AxisState axis_state=AXIS_STATE_IDLE;
+	OdrvAxisState axis_state=AXIS_STATE_IDLE;
 
 
-	void setAxisState(AxisState state);
-	AxisState getAxisState();
+	void setAxisState(OdrvAxisState state);
+	OdrvAxisState getAxisState();
 
-	void setControlMode (ControlMode mode);
-	ControlMode getControlMode ();
+	void setControlMode (OdrvControlMode mode);
+	OdrvControlMode getControlMode ();
 
 	void setParam (string param, int value);
 	void setParam (string param, float value);
